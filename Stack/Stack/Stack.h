@@ -5,7 +5,7 @@ class Stack
 {
 	t* arr;
 	int top;
-	size_t capacity;
+	size_t Capacity;
 public:
 	Stack(size_t n=7);
 	~Stack();
@@ -14,15 +14,20 @@ public:
 	void pop();
 	bool empty()const;
 	int size()const;
-	int Capacity()const;
+	size_t capacity()const;
 };
 
 template<typename t>
 Stack<t>::Stack(size_t n)
 {
-	if (n < 0)throw std::string("Array size can't be negative!\n");
-	arr = new t[n];
-	capacity = n;
+	if (n < 0) {
+		arr = new t[7];
+		Capacity = 7;
+	}
+	else {
+		arr = new t[n];
+		Capacity = n;
+	}
 	top = -1;
 }
 template<typename t>
@@ -35,22 +40,25 @@ template<typename t>
 void Stack<t>::push(t a)
 {
 	top++;
-	if (top >= capacity) {
-		capacity *= 2;
-		t* arr2 = new t[capacity];
+	if (top >= Capacity) {
+		Capacity *= 2;
+		t* arr2 = new t[Capacity];
 		for (size_t i = 0; i < top; ++i) {
 			arr2[i] = arr[i];
 		}
 		delete[]arr;
 		arr = arr2;
-		delete arr2;
 	}
 	arr[top] = a;
 }
 
 template<typename t>
-inline t Stack<t>::Top() const
+t Stack<t>::Top() const
 {
+	if (empty()) {
+		std::cout << "Stack is empty.\n"; 
+		return -1;
+	}
 	return arr[top];
 }
 
@@ -58,23 +66,23 @@ template<typename t>
 inline void Stack<t>::pop()
 {
 	if (top >= 0)top--;
-	else cout << "Stack is empty\n";
+	else std::cout << "Stack is empty\n";
 }
 
 template<typename t>
 inline bool Stack<t>::empty() const
 {
-	return top>=0;
+	return top<0;
 }
 
 template<typename t>
 inline int Stack<t>::size() const
 {
-	return top;
+	return top+1;
 }
 
 template<typename t>
-inline int Stack<t>::Capacity() const
+inline size_t Stack<t>::capacity() const
 {
-	return capacity;
+	return Capacity;
 }
